@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iar_EWP_parser", "iar_EWP_parser\iar_EWP_parser.csproj", "{7FCC0F09-DB27-46CB-8C73-6C095F9F7957}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FCC0F09-DB27-46CB-8C73-6C095F9F7957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCC0F09-DB27-46CB-8C73-6C095F9F7957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCC0F09-DB27-46CB-8C73-6C095F9F7957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCC0F09-DB27-46CB-8C73-6C095F9F7957}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DD0CFF7-3E92-4A35-AF95-B21F752C49E8}
+	EndGlobalSection
+EndGlobal
