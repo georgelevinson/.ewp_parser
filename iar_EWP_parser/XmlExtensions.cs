@@ -28,13 +28,14 @@ namespace iar_EWP_parser
             return match;
         }
 
-        public static List<FileConfig> DeserializeXml_FileConfigs(this XmlElement root)
+        public static List<FileConfig> DeserializeXml_FileConfigs(this XmlElement root, GroupConfig parentGroup)
         {
             List<XmlElement> fileConfigsXml = root.ChildNodesFilterAndReturn("file");
 
             return fileConfigsXml.Select(_ => new FileConfig
             {
                 Name = _.FirstChild?.Name == "name" ? _.FirstChild.InnerText : "none",
+                Parent = parentGroup,
                 Excluded = _.ChildNodesFilterAndReturn("excluded")
                             .SingleOrDefault()
                             .ChildNodesFilterAndReturn("configuration")
@@ -46,9 +47,9 @@ namespace iar_EWP_parser
         public static GroupConfig DeserializeXml_GroupConfig(this XmlElement root, GroupConfig parentGroup)
         {
             parentGroup.Name = root?.FirstChild?.Name == "name" ? root.FirstChild.InnerText : "none";
-            parentGroup.Files = root.DeserializeXml_FileConfigs();
+            parentGroup.Files = root.DeserializeXml_FileConfigs(parentGroup);
             parentGroup.Groups = root.ChildNodesFilterAndReturn("group")
-                                     .Select(_ => _.DeserializeXml_GroupConfig(new GroupConfig()))
+                                     .Select(_ => _.DeserializeXml_GroupConfig(new GroupConfig() { Parent = parentGroup }))
                                      .ToList();
             parentGroup.Excluded = root.ChildNodesFilterAndReturn("excluded")
                                        .SingleOrDefault()
