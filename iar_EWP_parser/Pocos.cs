@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace iar_EWP_parser
 {
-    interface TreeElement
+    public interface TreeElement
     {
         public string Name { get; set; }
+
+        public GroupConfig Parent { get; set; }
+
+        public List<string> Excluded { get; set; }
     }
     public class FileConfig : TreeElement
     {
