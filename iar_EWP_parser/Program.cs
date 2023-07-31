@@ -1,4 +1,12 @@
 ﻿using System.Xml;
+using System.Linq;
+using System.Collections;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace iar_EWP_parser
 {
@@ -7,26 +15,34 @@ namespace iar_EWP_parser
         private static readonly string ewp_path = "C:\\Users\\user\\Source\\device1\\Devices1 PRJ_3.11.ewp";
         static void Main(string[] args)
         {
-            var proj_obj = new IAR_Project(ewp_path);
-            Console.WriteLine("End of execution");
+            var proj_obj = ReadXmlAndDeserializeGroups(ewp_path);
+
+            //var allConfigs = proj_obj.FileConfigs.SelectMany(_ => _.Excluded).Distinct();
+            //proj_obj.FileConfigs.ForEach(_ => Console.WriteLine("\n\r\n\rProject name: " + _.Name + "\n\r" + string.Join("\n\r", allConfigs.Except(_.Excluded).ToArray())));
+
+            Console.WriteLine("\n\r\n\rEnd of execution");
         }
-    }
-
-    public class IAR_Project
-    {
-        public XmlNode Workspace { get; set; }
-
-        public IAR_Project(string ewp_path)
+        private static GroupConfig ReadXmlAndDeserializeGroups(string diskAddr)
         {
-            XmlReader reader = XmlReader.Create(ewp_path);
-            XmlDocument eww = new XmlDocument();
-            eww.Load(reader);
-            reader.Close();
+            try
+            {
+                XmlReader reader = XmlReader.Create(diskAddr);
+                XmlDocument eww = new XmlDocument();
 
-            Workspace = eww.DocumentElement;
+                eww.Load(reader);
+                reader.Close();
 
-            // Find the configuration in args[1] in the eww file
-            //XmlNodeList projects = workspace.SelectNodes("project");
+                var root = eww.DocumentElement;
+
+                return root.DeserializeXml_GroupConfig(new GroupConfig());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("\n\rException caught, exiting DeserializeXmlBranch(), null returned to the caller.\n\r");
+
+                return null;
+            }
         }
     }
 }
