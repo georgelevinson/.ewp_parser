@@ -18,8 +18,14 @@ namespace iar_EWP_parser
         {
             var proj_obj = ReadXmlAndDeserializeGroups(ewp_path);
 
-            //var allConfigs = proj_obj.FileConfigs.SelectMany(_ => _.Excluded).Distinct();
-            //proj_obj.FileConfigs.ForEach(_ => Console.WriteLine("\n\r\n\rProject name: " + _.Name + "\n\r" + string.Join("\n\r", allConfigs.Except(_.Excluded).ToArray())));
+            List<FileConfig> tempModules = proj_obj.Groups
+                .Where(_ => _.Name == "Devices_Modules")
+                .Single().Groups
+                .Where(_ => _.Name == "Tempearture")
+                .Single().Files.ToList();
+
+            tempModules.AnalyzeModulesInclusion(proj_obj);
+
 
             Console.WriteLine("\n\r\n\rEnd of execution");
         }
