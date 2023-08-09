@@ -38,7 +38,20 @@ namespace iar_EWP_parser
                 return null;
             }
 
-            return sfGroup.Groups.Select(_ => _.Name).ToList();
+            // find all the projects folders
+            var groups = sfGroup.Groups.Select(_ => _.Name).ToList();
+
+            // from those find such that contain different compilation groups and select those nested groups (e.g. StreetSiren/StreetSiren_RFM301, StreetSiren/StreetSiren_RFM66, etc.)
+            var nested = sfGroup.Groups.SelectMany(_ => _.Groups.Select(_ => _.Name)).Where(_ => groups.Any(g => _.Contains(g))).ToList();
+
+            // from proj folders find and remove those that contain multiple subproj (e.g. remove StreetSiren, only leave StreetSiren_RFM66, StreetSiren_RFM301 etc.)
+            var parents = groups.Where(g => nested.Any(n => n.Contains(g))).ToList();
+            parents.ForEach(p => groups.Remove(p));
+
+            // merge the two to obtain same list of compilations as the drop-down in IAR
+            groups.AddRange(nested);
+
+            return groups;
         }
         public static List<string> IsIncludedInProjects(this TreeElement element, IEnumerable<string> allProjects)
         {
@@ -62,7 +75,7 @@ namespace iar_EWP_parser
                 var included = fileConfig.IsIncludedInProjects(allProjects);
                 fileIncludedIn.Add(included);
                 noImplementations = noImplementations.Except(included).ToList();
-                Console.WriteLine("\n\r\n\rProject name: " + fileConfig.Name + "\n\r" + string.Join("\n\r", included));
+                Console.WriteLine("\n\r\n\rModule name: " + fileConfig.Name + "\n\r" + string.Join("\n\r", included));
             }
 
             var projectsWithMultipleImplementations = fileIncludedIn

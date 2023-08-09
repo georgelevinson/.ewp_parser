@@ -13,7 +13,8 @@ namespace iar_EWP_parser
 {
     internal class Program
     {
-        private static readonly string ewp_path = "C:\\Users\\user\\Source\\device1\\Devices1 PRJ_3.11.ewp";
+        //private static readonly string ewp_path = "C:\\Users\\user\\Source\\device1\\Devices1 PRJ_3.11.ewp";
+        private static readonly string ewp_path = "C:\\Users\\user\\Source\\device1_arm\\Device1_ARM PRJ_9.30.ewp";
         static void Main(string[] args)
         {
             var proj_obj = ReadXmlAndDeserializeGroups(ewp_path);
