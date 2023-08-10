@@ -55,7 +55,15 @@ namespace iar_EWP_parser
         }
         public static List<string> IsIncludedInProjects(this TreeElement element, IEnumerable<string> allProjects)
         {
-            return allProjects.Except(element.Excluded).ToList();
+            List<string> result = allProjects.Except(element.Excluded).ToList(); 
+
+            while(element.Parent != null)
+            {
+                element = element.Parent;
+                result = result.Except(element.Excluded).ToList();
+            }
+
+            return result;
         }
 
         // this method operates on a given set of FileConfigs assumed to be different implementations of a single module
